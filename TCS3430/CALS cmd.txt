@@ -1,0 +1,69 @@
+In {} registers you can find in datasheet
+
+----------------------------------------------------------------
+{0x91 REVID, 0x92 ID}
+#01 - Get ID и REVID
+----------------------------------------------------------------
+{0x80 ENABLE}
+#02 - Get power state and ALS 
+-#02=StatePower,StateALS - set power and ALS
+ For example, #02=1,1.
+----------------------------------------------------------------
+{0x94 - 0x9B}
+#03 - Get channel data. Depending on the mode it will return XYZ or IR. 
+----------------------------------------------------------------
+{0x90 CFG1}
+#04 - Get mode (XYZ or IR). 
+-#04=0 - set XYZ
+-#04=1 - set IR
+----------------------------------------------------------------
+{0x81 ATIME}
+#05 - Get integration time in us and maximum possible value. 
+-#05=IntTime - set integration time in us. Sets nearest possible value to a multiple of 2780us. Range - 2780us to 711680us.
+----------------------------------------------------------------
+{0x90 CFG1, 0x9F CFG2}
+#06 - Get gain
+-#06=Gain - set gain. Possible values: 1, 4, 16, 64, 128.
+----------------------------------------------------------------
+{0xD6 AZ_CONFIG}
+#07 - Get autozero state.
+-#07=0 - Start from zero.
+-#07=1 - Start from previous.
+----------------------------------------------------------------
+{0xD6 AZ_CONFIG}
+#08 - Get after how many iterations to start from zero.
+-#08=0 - Never
+-#08=127 - Only at first
+-#08=n - Every n iterations. Possible values: from 1 to 126
+----------------------------------------------------------------
+{0xDD INTENAB}
+#09 - Get interrupt status (ASAT и ALS)
+-#09=ASAT,ALS - Turn on(1)/turn off(0)/don't change(x и X) interrupt state. For example, #09=1,x - turn on ASAT and doesn't change ALS state
+----------------------------------------------------------------
+{0x84 AILTL, 0x85 AILTH}
+#10 - Get low threshold for 0 channel (Z value), upon reaching which an ALS interrupt will be generated.
+-#10=LowThreshold - Set low threshold. Possible values: 0-65535. Values greater than 65535 will be set as 65535
+----------------------------------------------------------------
+{0x86 AIHTL, 0x87 AIHTH}
+#11 - Get high threshold for 0 channel (Z value), upon reaching which an ALS interrupt will be generated.
+-#11=HighThreshold - Set high threshold. Possible values: 0-65535. Values greater than 65535 will be set as 65535
+----------------------------------------------------------------
+{0x8C PERS}
+#12 - Get after how many consecutive values out of range will the ALS interrupt be generated.
+-#12=n - Set the number of consecutive values out of range. Possible values: 0, 1, 2, 3, 5, 10, 15, 20, 45, 50, 55, 60.
+----------------------------------------------------------------
+{0x80 ENABLE}
+#13 - Get state of delay between interrupts
+-#13=0 - Turned off
+-#13=1 - Turned on
+----------------------------------------------------------------
+{0x83 WTIME, 0x8D CFG0}
+#14 - Get minimal delay between interrupts. In us for values less than 1s and in ms for values greater than 1s.
+-#14=WaitTime - Set wait time in us. Sets nearest possible value: if less than 711680us as multiples of 2780us, if greater as multiples of 12*2780us.
+For example, #14=1500000 will set wait time to 1.5012s
+----------------------------------------------------------------
+{0xAB CFG3}
+#15 - Get sleep after interrupt state
+-#15=SAI - Turn on(1)/turn off(0) sleep after interrupt
+----------------------------------------------------------------
+#99 - Get all config
